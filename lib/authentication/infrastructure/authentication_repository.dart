@@ -18,7 +18,7 @@ class AuthenticationRepository {
         password: password,
       );
       final uid = response.data['user_id'] as String;
-
+      print(uid);
       return Right(uid);
     } on DioException catch (e) {
       return left(
