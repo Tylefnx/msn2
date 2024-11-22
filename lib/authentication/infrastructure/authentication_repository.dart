@@ -17,9 +17,9 @@ class AuthenticationRepository {
         username: username,
         password: password,
       );
-      final uid = response.data['user_id'] as String;
-      print(uid);
-      return Right(uid);
+      print(response);
+      final json = response.data as Map;
+      return Right(json['token'].toString());
     } on DioException catch (e) {
       return left(
         AuthFailure.storage(e.message),

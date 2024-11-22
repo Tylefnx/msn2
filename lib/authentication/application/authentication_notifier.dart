@@ -53,7 +53,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
       username: username,
       password: password,
     );
-    state = registerOrFailure.fold(
+    state = await registerOrFailure.fold(
       (l) => AuthState.unauthenticated(l),
       (r) => const AuthState.unauthenticated(null),
     );
