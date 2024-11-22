@@ -1,17 +1,29 @@
-void login({
-  required String username,
-  required String password,
-}) {
-  return;
-}
+import 'package:dio/dio.dart';
 
-void register({
-  required String username,
-  required String password,
-}) {
-  return;
-}
+class AuthenticationService {
+  final Dio _dio;
 
-void forgotPassword() {
-  return;
+  AuthenticationService(this._dio);
+
+  Future<Response> login({
+    required String username,
+    required String password,
+  }) {
+    final response = _dio.post('');
+    return response;
+  }
+
+  Future<Response> register({
+    required String username,
+    required String password,
+    required String passwordAgain,
+  }) {
+    final response = _dio.post('');
+    return response;
+  }
+
+  Future<Response> forgotPassword() {
+    final response = _dio.post('');
+    return response;
+  }
 }
