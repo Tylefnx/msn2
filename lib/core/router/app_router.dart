@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:msn2/authentication/presentation/login_page.dart';
+import 'package:msn2/authentication/presentation/register_page.dart';
 
 part 'app_router.gr.dart';
 
@@ -15,6 +16,7 @@ class AppRouter extends RootStackRouter {
           page: LoginRoute.page,
           initial: true,
         ),
+        AutoRoute(page: RegisterRoute.page),
       ];
 
   @override

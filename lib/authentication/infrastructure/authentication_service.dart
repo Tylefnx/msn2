@@ -28,7 +28,7 @@ class AuthenticationService {
     required String password,
   }) {
     final response = _dio.post(
-      '$base$loginEndPoint',
+      '$base/$registerEndPoint',
       data: {
         'username': username,
         'password': password,

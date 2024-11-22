@@ -8,27 +8,28 @@ import 'package:msn2/core/presentation/app_padding.dart';
 import 'package:msn2/core/presentation/app_sb_padding.dart';
 import 'package:msn2/core/presentation/app_textformfield.dart';
 
-@RoutePage(name: 'LoginRoute')
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+@RoutePage()
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: AppPadding.h30v40(
-        child: const _LoginWidget(),
+        child: const _RegisterWidget(),
       ),
     );
   }
 }
 
-class _LoginWidget extends HookConsumerWidget {
-  const _LoginWidget();
+class _RegisterWidget extends HookConsumerWidget {
+  const _RegisterWidget();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final usernameController = useTextEditingController();
     final passwordController = useTextEditingController();
+    final passwordAgainController = useTextEditingController();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,13 +44,22 @@ class _LoginWidget extends HookConsumerWidget {
           label: 'Password',
         ),
         SB_AppPadding.h30(),
-        AppButton(
-          onPressed: () => ref.read(authStateNotifierProvider.notifier).login(
-                username: usernameController.text,
-                password: passwordController.text,
-              ),
-          title: 'Login',
+        AppTextformfield.privateText(
+          controller: passwordAgainController,
+          label: 'Password Again',
         ),
+        SB_AppPadding.h30(),
+        AppButton(
+          onPressed: () {
+            if (passwordController.text == passwordAgainController.text) {
+              ref.read(authStateNotifierProvider.notifier).register(
+                    username: usernameController.text,
+                    password: passwordController.text,
+                  );
+            }
+          },
+          title: 'Register',
+        )
       ],
     );
   }
