@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:msn2/authentication/presentation/login_page.dart';
 import 'package:msn2/authentication/presentation/register_page.dart';
+import 'package:msn2/core/presentation/main_page.dart';
+import 'package:msn2/main/presentation/user_main_page.dart';
 
 part 'app_router.gr.dart';
 
@@ -13,10 +15,18 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
-          page: LoginRoute.page,
+          page: RedirectingRoute.page,
           initial: true,
         ),
-        AutoRoute(page: RegisterRoute.page),
+        AutoRoute(
+          page: UserMainRoute.page,
+        ),
+        AutoRoute(
+          page: LoginRoute.page,
+        ),
+        AutoRoute(
+          page: RegisterRoute.page,
+        ),
       ];
 
   @override

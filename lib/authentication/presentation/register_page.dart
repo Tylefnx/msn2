@@ -6,7 +6,9 @@ import 'package:msn2/authentication/shared/providers.dart';
 import 'package:msn2/core/presentation/app_buttons.dart';
 import 'package:msn2/core/presentation/app_padding.dart';
 import 'package:msn2/core/presentation/app_sb_padding.dart';
+import 'package:msn2/core/presentation/app_text.dart';
 import 'package:msn2/core/presentation/app_textformfield.dart';
+import 'package:msn2/core/router/app_router.dart';
 
 @RoutePage()
 class RegisterPage extends StatelessWidget {
@@ -49,18 +51,64 @@ class _RegisterWidget extends HookConsumerWidget {
           label: 'Password Again',
         ),
         SB_AppPadding.h30(),
+        Row(
+          children: [
+            AppText.bold(text: "If you have an account"),
+            TextButton(
+              onPressed: () => AutoRouter.of(context).pushAndPopUntil(
+                const RedirectingRoute(),
+                predicate: (_) => false,
+              ),
+              child: AppText.bold(text: 'Log in'),
+            ),
+          ],
+        ),
+        SB_AppPadding.h30(),
         AppButton(
-          onPressed: () {
-            if (passwordController.text == passwordAgainController.text) {
-              ref.read(authStateNotifierProvider.notifier).register(
-                    username: usernameController.text,
-                    password: passwordController.text,
-                  );
-            }
-          },
+          onPressed: _onPressedRegister(
+            password: passwordController,
+            passwordAgain: passwordAgainController,
+            username: usernameController,
+            ref: ref,
+            context: context,
+          ),
           title: 'Register',
-        )
+        ),
       ],
     );
   }
+}
+
+void Function() _onPressedRegister({
+  required TextEditingController password,
+  required TextEditingController passwordAgain,
+  required TextEditingController username,
+  required WidgetRef ref,
+  required BuildContext context,
+}) {
+  return () async {
+    if (password.text == passwordAgain.text) {
+      final state = ref.watch(authStateNotifierProvider);
+      await ref.read(authStateNotifierProvider.notifier).register(
+            username: username.text,
+            password: password.text,
+          );
+      state.maybeMap(
+        unauthenticated: (_) {
+          final error = _.failure?.error;
+          if (error == null) {
+            ref.read(authStateNotifierProvider.notifier).login(
+                  username: username.text,
+                  password: password.text,
+                );
+            AutoRouter.of(context).pushAndPopUntil(
+              const RedirectingRoute(),
+              predicate: (_) => false,
+            );
+          }
+        },
+        orElse: () {},
+      );
+    }
+  };
 }

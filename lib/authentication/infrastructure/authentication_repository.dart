@@ -32,13 +32,14 @@ class AuthenticationRepository {
     required String password,
   }) async {
     try {
-      final response = await _service.login(
+      final response = await _service.register(
         username: username,
         password: password,
       );
-      final uid = response.data['user_id'] as String;
+      final status = response.data['message'] as String;
+      print(status);
 
-      return Right(uid);
+      return Right(status);
     } on DioException catch (e) {
       return left(
         AuthFailure.storage(e.message),

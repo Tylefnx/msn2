@@ -44,10 +44,13 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
       (l) => AuthState.unauthenticated(l),
       (r) => AuthState.authenticated(r, null),
     );
+    print(state);
   }
 
-  Future<void> register(
-      {required String username, required String password}) async {
+  Future<void> register({
+    required String username,
+    required String password,
+  }) async {
     state = const AuthState.loading();
     final registerOrFailure = await _repository.register(
       username: username,
@@ -56,10 +59,6 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     state = await registerOrFailure.fold(
       (l) => AuthState.unauthenticated(l),
       (r) => const AuthState.unauthenticated(null),
-    );
-    await login(
-      username: username,
-      password: password,
     );
   }
 
