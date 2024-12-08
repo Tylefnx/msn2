@@ -36,12 +36,4 @@ class AuthenticationService {
     );
     return response;
   }
-
-  Future<Response> forgotPassword() {
-    final response = _dio.post(
-      '$base$loginEndPoint',
-      data: {},
-    );
-    return response;
-  }
 }
