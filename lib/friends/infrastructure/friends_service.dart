@@ -7,6 +7,7 @@ class FriendsService {
   static const addFriendEndPoint = 'add_friend';
   static const removeFriendEndPoint = 'remove_friend';
   static const listFriendsEndPoint = 'list_friends';
+  static const listUsersEndPoint = 'list_users';
   static const port = '8080';
   static const base = 'http://localhost:$port';
 
@@ -49,6 +50,17 @@ class FriendsService {
   }) {
     final response = _dio.post(
       '$base/$listFriendsEndPoint',
+      data: {
+        'username': username,
+        'token': token,
+      },
+    );
+    return response;
+  }
+
+  Future<Response> listUsers() {
+    final response = _dio.post(
+      '$base/$listUsersEndPoint',
       data: {},
     );
     return response;
