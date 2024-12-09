@@ -23,38 +23,59 @@ class FriendsState with _$FriendsState {
   }) = _Authenticated;
 }
 
-class FriendsNotifier extends StateNotifier<FriendsState> {
+class FriendsStateNotifier extends StateNotifier<FriendsState> {
   final FriendsRepository _repository;
-  FriendsNotifier(this._repository) : super(const FriendsState.loading());
+  FriendsStateNotifier(this._repository) : super(const FriendsState.loading());
 
-  Future<void> listUsers({
-    required String username,
-    required String password,
-  }) async {
-    state = const FriendsState.loading();
-    final loginOrFailure = await _repository.listUsers();
-
+  List<String> getFriendsList() {
     final friendsList = state.maybeMap(
       orElse: () => <String>[],
       loaded: (_) => _.friends,
       failed: (_) => _.friends,
     );
+    return friendsList;
+  }
 
-    final friendRequests = state.maybeMap(
-      orElse: () {},
-      loaded: (value) => value.friendRequests,
-      failed: (value) => value.friendRequests,
+  List<String> getUsers() {
+    final friendsList = state.maybeMap(
+      orElse: () => <String>[],
+      loaded: (_) => _.users,
+      failed: (_) => _.users,
     );
+    return friendsList;
+  }
+
+  List<FriendRequest> getfriendRequests() {
+    final friendRequests = state.maybeMap(
+      orElse: () => <FriendRequest>[],
+      loaded: (_) => _.friendRequests,
+      failed: (_) => _.friendRequests,
+    );
+    return friendRequests;
+  }
+
+  Future<void> listUsers({
+    required String username,
+    required String password,
+  }) async {
+    final userList = getUsers();
+    final friendsList = getFriendsList();
+    final friendRequests = getfriendRequests();
+    state = const FriendsState.loading();
+    final loginOrFailure = await _repository.listUsers();
 
     state = loginOrFailure.fold(
-      (l) => FriendsState.failed(l,
-          users: const <String>[],
-          friends: friendsList,
-          friendRequests: friendRequests ?? <FriendRequest>[]),
+      (l) => FriendsState.failed(
+        l,
+        users: userList,
+        friends: friendsList,
+        friendRequests: friendRequests,
+      ),
       (r) => FriendsState.loaded(
-          users: r,
-          friends: friendsList,
-          friendRequests: friendRequests ?? <FriendRequest>[]),
+        users: r,
+        friends: friendsList,
+        friendRequests: friendRequests,
+      ),
     );
   }
 
@@ -62,36 +83,27 @@ class FriendsNotifier extends StateNotifier<FriendsState> {
     required String username,
     required String token,
   }) async {
+    final userList = getUsers();
+    final friendsList = getFriendsList();
+    final friendRequests = getfriendRequests();
     state = const FriendsState.loading();
-    final registerOrFailure = await _repository.listFriends(
+    final friendsOrFailure = await _repository.listFriends(
       username: username,
       token: token,
     );
     state = const FriendsState.loading();
 
-    final userList = state.maybeMap(
-      orElse: () => <String>[],
-      loaded: (_) => _.users,
-      failed: (_) => _.users,
-    );
-
-    final friendRequests = state.maybeMap(
-      orElse: () {},
-      loaded: (value) => value.friendRequests,
-      failed: (value) => value.friendRequests,
-    );
-
-    state = await registerOrFailure.fold(
+    state = await friendsOrFailure.fold(
       (l) => FriendsState.failed(
         l,
         users: userList,
-        friends: const <String>[],
-        friendRequests: friendRequests ?? <FriendRequest>[],
+        friends: friendsList,
+        friendRequests: friendRequests,
       ),
       (r) => FriendsState.loaded(
         users: userList,
-        friends: const <String>[],
-        friendRequests: friendRequests ?? <FriendRequest>[],
+        friends: r,
+        friendRequests: friendRequests,
       ),
     );
   }
@@ -101,6 +113,9 @@ class FriendsNotifier extends StateNotifier<FriendsState> {
     required String friendUsername,
     required String token,
   }) async {
+    final userList = getUsers();
+    final friendsList = getFriendsList();
+    final friendRequests = getfriendRequests();
     state = const FriendsState.loading();
     final registerOrFailure = await _repository.addFriend(
       username: username,
@@ -108,34 +123,17 @@ class FriendsNotifier extends StateNotifier<FriendsState> {
       friendUsername: friendUsername,
     );
     state = const FriendsState.loading();
-
-    final userList = state.maybeMap(
-      orElse: () => <String>[],
-      loaded: (_) => _.users,
-      failed: (_) => _.users,
-    );
-    final friendList = state.maybeMap(
-      orElse: () => <String>[],
-      loaded: (_) => _.friends,
-      failed: (_) => _.friends,
-    );
-
-    final friendRequests = state.maybeMap(
-      orElse: () {},
-      loaded: (value) => value.friendRequests,
-      failed: (value) => value.friendRequests,
-    );
     state = await registerOrFailure.fold(
       (l) => FriendsState.failed(
         l,
         users: userList,
-        friends: friendList,
-        friendRequests: friendRequests ?? <FriendRequest>[],
+        friends: friendsList,
+        friendRequests: friendRequests,
       ),
       (r) => FriendsState.loaded(
         users: userList,
-        friends: friendList,
-        friendRequests: friendRequests ?? <FriendRequest>[],
+        friends: friendsList,
+        friendRequests: friendRequests,
       ),
     );
   }
@@ -145,6 +143,9 @@ class FriendsNotifier extends StateNotifier<FriendsState> {
     required String friendUsername,
     required String token,
   }) async {
+    final userList = getUsers();
+    final friendsList = getFriendsList();
+    final friendRequests = getfriendRequests();
     state = const FriendsState.loading();
     final registerOrFailure = await _repository.listFriendRequests(
       username: username,
@@ -152,33 +153,17 @@ class FriendsNotifier extends StateNotifier<FriendsState> {
     );
     state = const FriendsState.loading();
 
-    final userList = state.maybeMap(
-      orElse: () => <String>[],
-      loaded: (_) => _.users,
-      failed: (_) => _.users,
-    );
-    final friendList = state.maybeMap(
-      orElse: () => <String>[],
-      loaded: (_) => _.friends,
-      failed: (_) => _.friends,
-    );
-
-    final friendRequests = state.maybeMap(
-      orElse: () {},
-      loaded: (value) => value.friendRequests,
-      failed: (value) => value.friendRequests,
-    );
     state = await registerOrFailure.fold(
       (l) => FriendsState.failed(
         l,
         users: userList,
-        friends: friendList,
-        friendRequests: friendRequests ?? <FriendRequest>[],
+        friends: friendsList,
+        friendRequests: friendRequests,
       ),
       (r) => FriendsState.loaded(
         users: userList,
-        friends: friendList,
-        friendRequests: friendRequests ?? <FriendRequest>[],
+        friends: friendsList,
+        friendRequests: r,
       ),
     );
   }
@@ -188,42 +173,27 @@ class FriendsNotifier extends StateNotifier<FriendsState> {
     required String friendUsername,
     required String token,
   }) async {
+    final userList = getUsers();
+    final friendRequests = getfriendRequests();
     state = const FriendsState.loading();
     final registerOrFailure = await _repository.removeFriend(
       username: username,
       token: token,
       friendUsername: friendUsername,
     );
-    state = const FriendsState.loading();
-
-    final userList = state.maybeMap(
-      orElse: () => <String>[],
-      loaded: (_) => _.users,
-      failed: (_) => _.users,
-    );
-    final friendList = state.maybeMap(
-      orElse: () => <String>[],
-      loaded: (_) => _.friends,
-      failed: (_) => _.friends,
-    );
-
-    final friendRequests = state.maybeMap(
-      orElse: () {},
-      loaded: (value) => value.friendRequests,
-      failed: (value) => value.friendRequests,
-    );
-
+    await listFriends(username: username, token: token);
+    final friendsList = getFriendsList();
     state = await registerOrFailure.fold(
       (l) => FriendsState.failed(
         l,
         users: userList,
-        friends: friendList,
-        friendRequests: friendRequests ?? <FriendRequest>[],
+        friends: friendsList,
+        friendRequests: friendRequests,
       ),
       (r) => FriendsState.loaded(
         users: userList,
-        friends: friendList,
-        friendRequests: friendRequests ?? <FriendRequest>[],
+        friends: friendsList,
+        friendRequests: friendRequests,
       ),
     );
   }
@@ -234,6 +204,7 @@ class FriendsNotifier extends StateNotifier<FriendsState> {
     required String token,
     required int answer,
   }) async {
+    final userList = getUsers();
     state = const FriendsState.loading();
     final registerOrFailure = await _repository.respondFriend(
       username: username,
@@ -241,38 +212,28 @@ class FriendsNotifier extends StateNotifier<FriendsState> {
       friendUsername: friendUsername,
       answer: answer,
     );
+    await listFriends(username: username, token: token);
+    await listFriendRequests(
+      username: username,
+      friendUsername: friendUsername,
+      token: token,
+    );
+    final friendsList = getFriendsList();
+    final friendRequests = getfriendRequests();
     state = const FriendsState.loading();
-
-    final userList = state.maybeMap(
-      orElse: () => <String>[],
-      loaded: (_) => _.users,
-      failed: (_) => _.users,
-    );
-
-    final friendRequests = state.maybeMap(
-      orElse: () {},
-      loaded: (value) => value.friendRequests,
-      failed: (value) => value.friendRequests,
-    );
-
-    final friendList = state.maybeMap(
-      orElse: () {},
-      loaded: (value) => value.friends,
-      failed: (value) => value.friends,
-    );
     await listFriends(username: username, token: token);
 
     state = await registerOrFailure.fold(
       (l) => FriendsState.failed(
         l,
         users: userList,
-        friends: friendList ?? <String>[],
-        friendRequests: friendRequests ?? <FriendRequest>[],
+        friends: friendsList,
+        friendRequests: friendRequests,
       ),
       (r) => FriendsState.loaded(
         users: userList,
-        friends: friendList ?? <String>[],
-        friendRequests: friendRequests ?? <FriendRequest>[],
+        friends: friendsList,
+        friendRequests: friendRequests,
       ),
     );
   }

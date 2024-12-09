@@ -54,7 +54,7 @@ class MessageRepository {
     }
   }
 
-  Future<Either<AuthFailure, List<Message>>> listSpecificChat({
+  Future<Either<AuthFailure, Chat>> listSpecificChat({
     required String username,
     required String friendUsername,
     required String token,
@@ -67,8 +67,12 @@ class MessageRepository {
       );
       final json = response.data as List<Map<String, dynamic>>;
       final messageList = json.map((e) => Message.fromJson(e)).toList();
-
-      return Right(messageList);
+      final chat = Chat(
+        sender: username,
+        receiver: friendUsername,
+        messages: messageList,
+      );
+      return Right(chat);
     } on DioException catch (e) {
       return left(
         AuthFailure.storage(e.message),

@@ -11,7 +11,7 @@ class AuthState with _$AuthState {
   const factory AuthState.loading() = _Loading;
   const factory AuthState.unauthenticated(AuthFailure? failure) =
       _UnAuthenticated;
-  const factory AuthState.authenticated(String uid, AuthFailure? failure) =
+  const factory AuthState.authenticated(String token, AuthFailure? failure) =
       _Authenticated;
 }
 

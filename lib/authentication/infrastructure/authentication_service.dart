@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 
 class AuthenticationService {
@@ -8,17 +10,14 @@ class AuthenticationService {
   static const registerEndPoint = 'register';
   static const port = '8080';
   static const base = 'http://localhost:$port';
+
   Future<Response> login({
     required String username,
     required String password,
   }) async {
-    final response = await _dio.post(
+    final response = _dio.post(
       '$base/$loginEndPoint',
-      // '$base/$loginEndPoint',
-      data: {
-        'username': username,
-        'password': password,
-      },
+      data: jsonEncode('{"username": "tayfun", "password": "anan"}'),
     );
     return response;
   }

@@ -65,7 +65,7 @@ class _RegisterWidget extends HookConsumerWidget {
         ),
         SB_AppPadding.h30(),
         AppButton(
-          onPressed: _onPressedRegister(
+          onPressed: () => _onPressedRegister(
             password: passwordController,
             passwordAgain: passwordAgainController,
             username: usernameController,

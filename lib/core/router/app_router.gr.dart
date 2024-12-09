@@ -10,6 +10,63 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [ChatPage]
+class ChatRoute extends PageRouteInfo<void> {
+  const ChatRoute({List<PageRouteInfo>? children})
+      : super(
+          ChatRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ChatRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ChatPage();
+    },
+  );
+}
+
+/// generated route for
+/// [DmPage]
+class DmRoute extends PageRouteInfo<void> {
+  const DmRoute({List<PageRouteInfo>? children})
+      : super(
+          DmRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DmRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const DmPage();
+    },
+  );
+}
+
+/// generated route for
+/// [FriendsPage]
+class FriendsRoute extends PageRouteInfo<void> {
+  const FriendsRoute({List<PageRouteInfo>? children})
+      : super(
+          FriendsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FriendsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const FriendsPage();
+    },
+  );
+}
+
+/// generated route for
 /// [LoginPage]
 class LoginRoute extends PageRouteInfo<void> {
   const LoginRoute({List<PageRouteInfo>? children})
