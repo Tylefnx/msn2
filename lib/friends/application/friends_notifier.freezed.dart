@@ -19,28 +19,34 @@ mixin _$FriendsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-            AuthFailure? failure, List<String> users, List<String> friends)
+    required TResult Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)
         failed,
-    required TResult Function(List<String> users, List<String> friends) loaded,
+    required TResult Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)
+        loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-            AuthFailure? failure, List<String> users, List<String> friends)?
+    TResult? Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)?
         failed,
-    TResult? Function(List<String> users, List<String> friends)? loaded,
+    TResult? Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)?
+        loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(
-            AuthFailure? failure, List<String> users, List<String> friends)?
+    TResult Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)?
         failed,
-    TResult Function(List<String> users, List<String> friends)? loaded,
+    TResult Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)?
+        loaded,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -131,10 +137,12 @@ class _$LoadingImpl extends _Loading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-            AuthFailure? failure, List<String> users, List<String> friends)
+    required TResult Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)
         failed,
-    required TResult Function(List<String> users, List<String> friends) loaded,
+    required TResult Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)
+        loaded,
   }) {
     return loading();
   }
@@ -143,10 +151,12 @@ class _$LoadingImpl extends _Loading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-            AuthFailure? failure, List<String> users, List<String> friends)?
+    TResult? Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)?
         failed,
-    TResult? Function(List<String> users, List<String> friends)? loaded,
+    TResult? Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)?
+        loaded,
   }) {
     return loading?.call();
   }
@@ -155,10 +165,12 @@ class _$LoadingImpl extends _Loading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(
-            AuthFailure? failure, List<String> users, List<String> friends)?
+    TResult Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)?
         failed,
-    TResult Function(List<String> users, List<String> friends)? loaded,
+    TResult Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)?
+        loaded,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -213,7 +225,11 @@ abstract class _$$UnAuthenticatedImplCopyWith<$Res> {
           $Res Function(_$UnAuthenticatedImpl) then) =
       __$$UnAuthenticatedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({AuthFailure? failure, List<String> users, List<String> friends});
+  $Res call(
+      {AuthFailure? failure,
+      List<String> users,
+      List<String> friends,
+      List<FriendRequest> friendRequests});
 
   $AuthFailureCopyWith<$Res>? get failure;
 }
@@ -234,6 +250,7 @@ class __$$UnAuthenticatedImplCopyWithImpl<$Res>
     Object? failure = freezed,
     Object? users = null,
     Object? friends = null,
+    Object? friendRequests = null,
   }) {
     return _then(_$UnAuthenticatedImpl(
       freezed == failure
@@ -248,6 +265,10 @@ class __$$UnAuthenticatedImplCopyWithImpl<$Res>
           ? _value._friends
           : friends // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      friendRequests: null == friendRequests
+          ? _value._friendRequests
+          : friendRequests // ignore: cast_nullable_to_non_nullable
+              as List<FriendRequest>,
     ));
   }
 
@@ -270,9 +291,12 @@ class __$$UnAuthenticatedImplCopyWithImpl<$Res>
 
 class _$UnAuthenticatedImpl extends _UnAuthenticated {
   const _$UnAuthenticatedImpl(this.failure,
-      {required final List<String> users, required final List<String> friends})
+      {required final List<String> users,
+      required final List<String> friends,
+      required final List<FriendRequest> friendRequests})
       : _users = users,
         _friends = friends,
+        _friendRequests = friendRequests,
         super._();
 
   @override
@@ -293,9 +317,17 @@ class _$UnAuthenticatedImpl extends _UnAuthenticated {
     return EqualUnmodifiableListView(_friends);
   }
 
+  final List<FriendRequest> _friendRequests;
+  @override
+  List<FriendRequest> get friendRequests {
+    if (_friendRequests is EqualUnmodifiableListView) return _friendRequests;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_friendRequests);
+  }
+
   @override
   String toString() {
-    return 'FriendsState.failed(failure: $failure, users: $users, friends: $friends)';
+    return 'FriendsState.failed(failure: $failure, users: $users, friends: $friends, friendRequests: $friendRequests)';
   }
 
   @override
@@ -305,7 +337,9 @@ class _$UnAuthenticatedImpl extends _UnAuthenticated {
             other is _$UnAuthenticatedImpl &&
             (identical(other.failure, failure) || other.failure == failure) &&
             const DeepCollectionEquality().equals(other._users, _users) &&
-            const DeepCollectionEquality().equals(other._friends, _friends));
+            const DeepCollectionEquality().equals(other._friends, _friends) &&
+            const DeepCollectionEquality()
+                .equals(other._friendRequests, _friendRequests));
   }
 
   @override
@@ -313,7 +347,8 @@ class _$UnAuthenticatedImpl extends _UnAuthenticated {
       runtimeType,
       failure,
       const DeepCollectionEquality().hash(_users),
-      const DeepCollectionEquality().hash(_friends));
+      const DeepCollectionEquality().hash(_friends),
+      const DeepCollectionEquality().hash(_friendRequests));
 
   /// Create a copy of FriendsState
   /// with the given fields replaced by the non-null parameter values.
@@ -328,38 +363,44 @@ class _$UnAuthenticatedImpl extends _UnAuthenticated {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-            AuthFailure? failure, List<String> users, List<String> friends)
+    required TResult Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)
         failed,
-    required TResult Function(List<String> users, List<String> friends) loaded,
+    required TResult Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)
+        loaded,
   }) {
-    return failed(failure, users, friends);
+    return failed(failure, users, friends, friendRequests);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-            AuthFailure? failure, List<String> users, List<String> friends)?
+    TResult? Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)?
         failed,
-    TResult? Function(List<String> users, List<String> friends)? loaded,
+    TResult? Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)?
+        loaded,
   }) {
-    return failed?.call(failure, users, friends);
+    return failed?.call(failure, users, friends, friendRequests);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(
-            AuthFailure? failure, List<String> users, List<String> friends)?
+    TResult Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)?
         failed,
-    TResult Function(List<String> users, List<String> friends)? loaded,
+    TResult Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)?
+        loaded,
     required TResult orElse(),
   }) {
     if (failed != null) {
-      return failed(failure, users, friends);
+      return failed(failure, users, friends, friendRequests);
     }
     return orElse();
   }
@@ -401,13 +442,16 @@ class _$UnAuthenticatedImpl extends _UnAuthenticated {
 
 abstract class _UnAuthenticated extends FriendsState {
   const factory _UnAuthenticated(final AuthFailure? failure,
-      {required final List<String> users,
-      required final List<String> friends}) = _$UnAuthenticatedImpl;
+          {required final List<String> users,
+          required final List<String> friends,
+          required final List<FriendRequest> friendRequests}) =
+      _$UnAuthenticatedImpl;
   const _UnAuthenticated._() : super._();
 
   AuthFailure? get failure;
   List<String> get users;
   List<String> get friends;
+  List<FriendRequest> get friendRequests;
 
   /// Create a copy of FriendsState
   /// with the given fields replaced by the non-null parameter values.
@@ -422,7 +466,10 @@ abstract class _$$AuthenticatedImplCopyWith<$Res> {
           _$AuthenticatedImpl value, $Res Function(_$AuthenticatedImpl) then) =
       __$$AuthenticatedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<String> users, List<String> friends});
+  $Res call(
+      {List<String> users,
+      List<String> friends,
+      List<FriendRequest> friendRequests});
 }
 
 /// @nodoc
@@ -440,6 +487,7 @@ class __$$AuthenticatedImplCopyWithImpl<$Res>
   $Res call({
     Object? users = null,
     Object? friends = null,
+    Object? friendRequests = null,
   }) {
     return _then(_$AuthenticatedImpl(
       users: null == users
@@ -450,6 +498,10 @@ class __$$AuthenticatedImplCopyWithImpl<$Res>
           ? _value._friends
           : friends // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      friendRequests: null == friendRequests
+          ? _value._friendRequests
+          : friendRequests // ignore: cast_nullable_to_non_nullable
+              as List<FriendRequest>,
     ));
   }
 }
@@ -458,9 +510,12 @@ class __$$AuthenticatedImplCopyWithImpl<$Res>
 
 class _$AuthenticatedImpl extends _Authenticated {
   const _$AuthenticatedImpl(
-      {required final List<String> users, required final List<String> friends})
+      {required final List<String> users,
+      required final List<String> friends,
+      required final List<FriendRequest> friendRequests})
       : _users = users,
         _friends = friends,
+        _friendRequests = friendRequests,
         super._();
 
   final List<String> _users;
@@ -479,9 +534,17 @@ class _$AuthenticatedImpl extends _Authenticated {
     return EqualUnmodifiableListView(_friends);
   }
 
+  final List<FriendRequest> _friendRequests;
+  @override
+  List<FriendRequest> get friendRequests {
+    if (_friendRequests is EqualUnmodifiableListView) return _friendRequests;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_friendRequests);
+  }
+
   @override
   String toString() {
-    return 'FriendsState.loaded(users: $users, friends: $friends)';
+    return 'FriendsState.loaded(users: $users, friends: $friends, friendRequests: $friendRequests)';
   }
 
   @override
@@ -490,14 +553,17 @@ class _$AuthenticatedImpl extends _Authenticated {
         (other.runtimeType == runtimeType &&
             other is _$AuthenticatedImpl &&
             const DeepCollectionEquality().equals(other._users, _users) &&
-            const DeepCollectionEquality().equals(other._friends, _friends));
+            const DeepCollectionEquality().equals(other._friends, _friends) &&
+            const DeepCollectionEquality()
+                .equals(other._friendRequests, _friendRequests));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_users),
-      const DeepCollectionEquality().hash(_friends));
+      const DeepCollectionEquality().hash(_friends),
+      const DeepCollectionEquality().hash(_friendRequests));
 
   /// Create a copy of FriendsState
   /// with the given fields replaced by the non-null parameter values.
@@ -511,38 +577,44 @@ class _$AuthenticatedImpl extends _Authenticated {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-            AuthFailure? failure, List<String> users, List<String> friends)
+    required TResult Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)
         failed,
-    required TResult Function(List<String> users, List<String> friends) loaded,
+    required TResult Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)
+        loaded,
   }) {
-    return loaded(users, friends);
+    return loaded(users, friends, friendRequests);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-            AuthFailure? failure, List<String> users, List<String> friends)?
+    TResult? Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)?
         failed,
-    TResult? Function(List<String> users, List<String> friends)? loaded,
+    TResult? Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)?
+        loaded,
   }) {
-    return loaded?.call(users, friends);
+    return loaded?.call(users, friends, friendRequests);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(
-            AuthFailure? failure, List<String> users, List<String> friends)?
+    TResult Function(AuthFailure? failure, List<String> users,
+            List<String> friends, List<FriendRequest> friendRequests)?
         failed,
-    TResult Function(List<String> users, List<String> friends)? loaded,
+    TResult Function(List<String> users, List<String> friends,
+            List<FriendRequest> friendRequests)?
+        loaded,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(users, friends);
+      return loaded(users, friends, friendRequests);
     }
     return orElse();
   }
@@ -585,11 +657,13 @@ class _$AuthenticatedImpl extends _Authenticated {
 abstract class _Authenticated extends FriendsState {
   const factory _Authenticated(
       {required final List<String> users,
-      required final List<String> friends}) = _$AuthenticatedImpl;
+      required final List<String> friends,
+      required final List<FriendRequest> friendRequests}) = _$AuthenticatedImpl;
   const _Authenticated._() : super._();
 
   List<String> get users;
   List<String> get friends;
+  List<FriendRequest> get friendRequests;
 
   /// Create a copy of FriendsState
   /// with the given fields replaced by the non-null parameter values.
